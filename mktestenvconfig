@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ -e testenv_config ]; then
+    ret=0
+    . testenv_config
+    if [ -e "${SNOWFLAKE_REPO}/proxy-go" ]; then
+        echo "SNOWFLAKE_REPO appears OK"
+    else
+        echo "SNOWFLAKE_REPO not set correctly: cannot find ${SNOWFLAKE_REPO}/proxy-go"
+        ret=1
+    fi
+
+    if [ "$ret" = "1" ]; then
+        echo ""
+        echo "Please edit the testenv_config file."
+    fi
+    exit $ret
+fi
+
+cat <<EOF >testenv_config
+## The full path to your checked-out copy of the firefox repo
+SNOWFLAKE_REPO=/somewhere/snowflake.git
+
+EOF
+
+echo "Please edit the paths in the testenv_config file."
+exit 1

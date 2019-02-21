@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./mktestenvconfig || exit 1
+. testenv_config
+
+docker rm snow_test; docker run --name snow_test -p 8080:8080 -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake.git snowbox /bin/bash
