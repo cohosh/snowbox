@@ -1,6 +1,34 @@
 #!/bin/bash
+# POSIX
+
+attach=0
+
+while :; do
+    case $1 in
+        -a|-\?|--attach)
+            attach=1
+            ;;
+        -?*)
+            printf 'Warning: Unknown option: %s\n' "$1" >&2
+            ;;
+        *) #default case: no more options
+            break
+    esac
+
+    shift
+done
 
 ./mktestenvconfig || exit 1
 . testenv_config
 
-docker rm snow_test; docker run --name snow_test -p 8080:8080 -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake.git snowbox /bin/bash
+if [ "$attach" -eq "0" ]; then
+    docker rm snow_test 2> /dev/null
+    if [ $? -ne 0 ]; then
+        printf 'Container already exists. Trying to attach...\n'
+    else 
+        docker run --name snow_test -p 8080:8080 -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake.git snowbox /bin/bash
+        exit
+    fi
+fi
+
+docker exec -it snow_test /bin/bash
