@@ -18,7 +18,7 @@ if [ -e testenv_config ]; then
 fi
 
 cat <<EOF >testenv_config
-## The full path to your checked-out copy of the firefox repo
+## The full path to your checked-out copy of the snowflake repo
 SNOWFLAKE_REPO=/somewhere/snowflake.git
 
 EOF
