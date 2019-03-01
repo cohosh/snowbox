@@ -2,11 +2,15 @@
 # POSIX
 
 build=0
+client=0
 
 while :; do
     case $1 in
         -b|-\?|--build)
             build=1
+            ;;
+        -c|-\?|--client)
+            client=1
             ;;
         -?*)
             printf 'Warning: Unknown option: %s\n' "$1" >&2
@@ -37,10 +41,29 @@ if [ "$build" -ne "0" ]; then
     cd /go/src
 fi
 
-cp snowflake.git/broker/broker /go/bin/
-cp snowflake.git/proxy-go/proxy-go /go/bin/
-cp snowflake.git/client/client /go/bin/
-cp snowflake.git/client/torrc-localhost /go/bin
+if [ "$client" -eq "0" ]; then
+    cp snowflake.git/broker/broker /go/bin/
+    cp snowflake.git/proxy-go/proxy-go /go/bin/
+    cp snowflake.git/client/client /go/bin/
+    cp snowflake.git/client/torrc-localhost /go/bin
+else
+    cd /go/bin
+
+    # Find a SOCKSPort to bind to that is not in use
+    count=0
+    while :; do
+        if ! netstat --inet -n -a -p 2> /dev/null | grep ":$(($count+9050))" ; then
+            break
+        fi
+        count=$(($count+1))
+    done
+
+    cp torrc-localhost torrc-$count
+    sed -i -e "s/datadir/datadir$count/g" torrc-$count
+    echo "SOCKSPort $(($count+9050))" >> torrc-$count
+
+    tor -f torrc-$count
+fi
 
 cd /go/bin
 
