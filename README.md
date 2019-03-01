@@ -4,7 +4,7 @@ A local test environment for testing Snowflake
 ### Building the docker container
 docker build -t snowbox .
 
-### Running the text environment:
+### Running the test environment
 The first step is to clone the snowflake repostory locally onto your machine. You must then set up the configuration file by running ./mktestenvconfig
 
 This will create the file testenv_config that you may edit with the path to your local snowflake repository.
@@ -16,4 +16,7 @@ docker rm snow_test; docker run --name snow_test -p 8080:8080 -it  -v ${SNOWFLAK
 ```
 
 ### Building snowflake inside the Docker container
-Inside the snowbox container, execute ./script.sh to build and run each component of snowflake.
+Inside the snowbox container, execute ```./script.sh --build``` to build and run each component of snowflake. You will not need to rebuild snowflake everytime the container is started. To run the broker, proxy-go and client components without building first, simply execute ./script.sh
+
+### Attaching additional terminals to the test environment
+Open a new terminal and execute ```./snowbox_run --attach```. Excluding the --attach argument will prompt the script to attempt an attachment if the container is already running.
