@@ -18,27 +18,33 @@ while :; do
     shift
 done
 
-
-cd snowflake.git
-cd broker
+# we manually copy files locally (avoiding go install so we don't have to recompile everytime)
 
 if [ "$build" -ne "0" ]; then
-    go get -d -v
-    go build -v
-fi
-nohup ./broker -addr ":8080" -disable-tls &
+    cd snowflake.git/broker
 
-cd ../proxy-go
-if [ "$build" -ne "0" ]; then
     go get -d -v
     go build -v
-fi
-nohup ./proxy-go -broker "http://localhost:8080" &
 
-cd ../client
-if [ "$build" -ne "0" ]; then
+    cd ../proxy-go
     go get -d -v
     go build -v
+
+    cd ../client
+    go get -d -v
+    go build -v
+    
+    cd /go/src
 fi
+
+cp snowflake.git/broker/broker /go/bin/
+cp snowflake.git/proxy-go/proxy-go /go/bin/
+cp snowflake.git/client/client /go/bin/
+cp snowflake.git/client/torrc-localhost /go/bin
+
+cd /go/bin
+
+nohup broker -addr ":8080" -disable-tls &
+nohup proxy-go -broker "http://localhost:8080" &
 
 tor -f torrc-localhost
