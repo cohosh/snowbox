@@ -62,12 +62,12 @@ else
     sed -i -e "s/datadir/datadir$count/g" torrc-$count
     echo "SOCKSPort $(($count+9050))" >> torrc-$count
 
-    tor -f torrc-$count
+    nohup tor -f torrc-$count > client-$count.log 2> client-$count.err &
 fi
 
 cd /go/bin
 
-nohup broker -addr ":8080" -disable-tls &
-nohup proxy-go -broker "http://localhost:8080" &
+nohup broker -addr ":8080" -disable-tls > broker.log 2> broker.err &
+nohup proxy-go -broker "http://localhost:8080" > proxy.log 2> proxy.err &
 
-tor -f torrc-localhost
+nohup tor -f torrc-localhost > client-0.log 2> client-0.err &
