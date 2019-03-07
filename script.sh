@@ -63,6 +63,8 @@ else
     echo "SOCKSPort $(($count+9050))" >> torrc-$count
 
     nohup tor -f torrc-$count > client-$count.log 2> client-$count.err &
+
+    exit
 fi
 
 cd /go/bin
