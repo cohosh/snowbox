@@ -65,7 +65,7 @@ else
 
     cp torrc-localhost torrc-$count
     sed -i -e "s/datadir/datadir$count/g" torrc-$count
-    sed -i -e "s/client.log/client-$count.log/g" torrc-$count
+    sed -i -e "/^-url http:\/\/localhost:8080\//a -log snowflake_client-$count.log" torrc-$count
     echo "SOCKSPort $(($count+9050))" >> torrc-$count
 
     nohup tor -f torrc-$count > client-$count.log 2> client-$count.err &
