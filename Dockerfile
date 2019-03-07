@@ -7,3 +7,4 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER snowflake
 WORKDIR /go/src/
 COPY script.sh .
+COPY test.sh .
