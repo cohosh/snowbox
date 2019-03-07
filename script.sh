@@ -41,12 +41,7 @@ if [ "$build" -ne "0" ]; then
     cd /go/src
 fi
 
-if [ "$client" -eq "0" ]; then
-    cp snowflake.git/broker/broker /go/bin/
-    cp snowflake.git/proxy-go/proxy-go /go/bin/
-    cp snowflake.git/client/client /go/bin/
-    cp snowflake.git/client/torrc-localhost /go/bin
-else
+if [ "$client" -ne "0" ]; then
     cd /go/bin
 
     # Find a SOCKSPort to bind to that is not in use
@@ -66,6 +61,11 @@ else
 
     exit
 fi
+
+cp snowflake.git/broker/broker /go/bin/
+cp snowflake.git/proxy-go/proxy-go /go/bin/
+cp snowflake.git/client/client /go/bin/
+cp snowflake.git/client/torrc-localhost /go/bin
 
 cd /go/bin
 
