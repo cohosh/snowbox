@@ -26,7 +26,7 @@ if [ "$attach" -eq "0" ]; then
     if [ $? -ne 0 ]; then
         printf 'Container already exists. Trying to attach...\n'
     else 
-        docker run --name snow_test -p 8080:8080 -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake.git snowbox /bin/bash
+        docker run --name snow_test -p 8080:8080 -p 6060:6060 -p 5900:5900 -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake.git --net=vnc --cap-add=SYS_PTRACE --security-opt seccomp=unconfined snowbox /bin/bash
         exit
     fi
 fi

@@ -20,3 +20,10 @@ Inside the snowbox container, execute ```./script.sh --build``` to build and run
 
 ### Attaching additional terminals to the test environment
 Open a new terminal and execute ```./snowbox_run --attach```. Excluding the --attach argument will prompt the script to attempt an attachment if the container is already running.
+
+### Running a browser-based proxy
+To run and debug a browser-based proxy, you can connect to the docker container using VNC. On your host machine, run the following command:
+```vncviewer localhost```
+A window showing a running firefox session should appear. You can then navigate to
+```file:/go/src/snowflake.git/proxy/build/embed.html```
+to run the proxy.

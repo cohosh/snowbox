@@ -25,6 +25,10 @@ done
 # we manually copy files locally (avoiding go install so we don't have to recompile everytime)
 
 if [ "$build" -ne "0" ]; then
+    #kill broker, proxy, client processes
+    pkill -f broker
+    pkill -f client
+
     cd snowflake.git/broker
 
     go get -d -v
@@ -37,6 +41,11 @@ if [ "$build" -ne "0" ]; then
     cd ../client
     go get -d -v
     go build -v
+
+    cd ../proxy
+    cake build
+    #need to point to our localhost broker instead
+    sed -i 's/snowflake-broker.bamsoftware.com/localhost:8080/' build/snowflake.js
     
     cd /go/src
 fi
@@ -49,8 +58,8 @@ if [ "$client" -eq "0" ]; then
 
     cd /go/bin
 
-    nohup broker -addr ":8080" -disable-tls > broker.log 2> broker.err &
-    nohup proxy-go -broker "http://localhost:8080" > proxy.log 2> proxy.err &
+    broker -addr ":8080" -disable-tls > broker.log 2> broker.err &
+    proxy-go -broker "http://localhost:8080" > proxy.log 2> proxy.err &
 else
     cd /go/bin
 
@@ -68,6 +77,12 @@ else
     sed -i -e "/^-url http:\/\/localhost:8080\//a -log snowflake_client-$count.log" torrc-$count
     echo "SOCKSPort $(($count+9050))" >> torrc-$count
 
-    nohup tor -f torrc-$count > client-$count.log 2> client-$count.err &
+    tor -f torrc-$count > client-$count.log 2> client-$count.err &
 fi
 
+# Start X and firefox for proxy
+/usr/bin/Xvfb :1 -screen 0 1024x768x24 >/dev/null 2>&1 &
+sleep 2
+/usr/bin/x11vnc -display :1.0 >/dev/null 2>&1 &
+
+DISPLAY=:1 firefox &
