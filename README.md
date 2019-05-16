@@ -24,6 +24,8 @@ Open a new terminal and execute ```./snowbox_run --attach```. Excluding the --at
 ### Running a browser-based proxy
 To run and debug a browser-based proxy, you can connect to the docker container using VNC. On your host machine, run the following command:
 ```vncviewer localhost```
+Then, inside snowbox start firefox with the command:
+```DISPLAY=:1 nohup firefox &```
 A window showing a running firefox session should appear. You can then navigate to
 ```file:/go/src/snowflake.git/proxy/build/embed.html```
 to run the proxy.
