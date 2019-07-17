@@ -43,7 +43,7 @@ if [ "$build" -ne "0" ]; then
     go build -v
 
     cd ../proxy
-    cake build
+    npm run build
     #need to point to our localhost broker instead
     sed -i 's/snowflake-broker.bamsoftware.com/localhost:8080/' build/snowflake.js
     
