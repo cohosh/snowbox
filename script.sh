@@ -22,7 +22,7 @@ while :; do
     shift
 done
 
-# we manually copy files locally (avoiding go install so we don't have to recompile everytime)
+# we manually copy files locally (avoiding go install so we don't have to recompile every time)
 
 if [ "$build" -ne "0" ]; then
     #kill broker, proxy, client processes
@@ -45,7 +45,7 @@ if [ "$build" -ne "0" ]; then
     cd ../proxy
     npm run build
     #need to point to our localhost broker instead
-    sed -i 's/snowflake-broker.bamsoftware.com/localhost:8080/' build/snowflake.js
+    sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' build/embed.js
     
     cd /go/src
 fi
