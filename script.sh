@@ -28,6 +28,7 @@ if [ "$build" -ne "0" ]; then
     #kill broker, proxy, client processes
     pkill -f broker
     pkill -f client
+    pkill -f tor
 
     cd snowflake.git/broker
 
@@ -44,8 +45,11 @@ if [ "$build" -ne "0" ]; then
 
     cd ../proxy
     npm run build
+    npm run webext
     #need to point to our localhost broker instead
     sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' build/embed.js
+    sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' webext/embed.js
+    sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' webext/snowflake.js
     
     cd /go/src
 fi
@@ -60,6 +64,13 @@ if [ "$client" -eq "0" ]; then
 
     broker -addr ":8080" -disable-tls > broker.log 2> broker.err &
     proxy-go -broker "http://localhost:8080" > proxy.log 2> proxy.err &
+
+    # Start X and firefox for proxy
+    /usr/bin/Xvfb :1 -screen 0 1024x768x24 >/dev/null 2>&1 &
+    sleep 2
+    /usr/bin/x11vnc -display :1.0 >/dev/null 2>&1 &
+
+    DISPLAY=:1 firefox file:/go/src/snowflake.git/proxy/build/embed.html &
 else
     cd /go/bin
 
@@ -80,9 +91,3 @@ else
     tor -f torrc-$count > client-$count.log 2> client-$count.err &
 fi
 
-# Start X and firefox for proxy
-/usr/bin/Xvfb :1 -screen 0 1024x768x24 >/dev/null 2>&1 &
-sleep 2
-/usr/bin/x11vnc -display :1.0 >/dev/null 2>&1 &
-
-DISPLAY=:1 firefox file:/go/src/snowflake.git/proxy/build/embed.html &
