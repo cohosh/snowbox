@@ -85,4 +85,4 @@ fi
 sleep 2
 /usr/bin/x11vnc -display :1.0 >/dev/null 2>&1 &
 
-DISPLAY=:1 firefox &
+DISPLAY=:1 firefox file:/go/src/snowflake.git/proxy/build/embed.html &
