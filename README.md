@@ -22,10 +22,10 @@ Inside the snowbox container, execute ```./script.sh --build``` to build and run
 Open a new terminal and execute ```./snowbox_run --attach```. Excluding the --attach argument will prompt the script to attempt an attachment if the container is already running.
 
 ### Running a browser-based proxy
-To run and debug a browser-based proxy, you can connect to the docker container using VNC. On your host machine, run the following command:
-```vncviewer localhost```
-Then, inside snowbox start firefox with the command:
-```DISPLAY=:1 nohup firefox &```
-A window showing a running firefox session should appear. You can then navigate to
-```file:/go/src/snowflake.git/proxy/build/embed.html```
-to run the proxy.
+To run and debug a browser-based proxy, execute ```./script.sh --build``` as described above to prepare the embeded and webextension proxies for use with the local broker. The best way to test browser-based proxies is to then load the badge or the webextension from outside the container.
+
+##### Testing the embedded badge
+After getting the broker running in snowbox, open ```snowflake.git/proxy/build/embed.html``` in a broswer. It should be pointing to the broker at localhost:8080 after running the build script.
+
+##### Testing the webextension
+After getting the broker running in snowbox, navigate to ```about:debugging``` and select the "load temporary extension" option. Select ```snowflake.git/proxy/webext/manifest.json```
