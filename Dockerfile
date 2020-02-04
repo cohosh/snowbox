@@ -12,6 +12,10 @@ RUN adduser snowflake sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER snowflake
 RUN go get -u github.com/smartystreets/goconvey
-WORKDIR /go/src/
-COPY script.sh .
-COPY test.sh .
+COPY script.sh /go/bin/
+COPY test.sh /go/bin/
+COPY torrc-server /home/snowflake/
+COPY torrc-client /home/snowflake/
+COPY aliases.txt .
+RUN cat aliases.txt >> /home/snowflake/.bashrc
+WORKDIR /home/snowflake/

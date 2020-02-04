@@ -29,21 +29,26 @@ if [ "$build" -ne "0" ]; then
     pkill -f broker
     pkill -f client
     pkill -f tor
+    pkill -f server
 
-    cd snowflake.git/broker
+    cd /go/src/snowflake.git/broker
 
     go get -d -v
     go build -v
 
-    cd ../proxy-go
+    cd /go/src/snowflake.git/proxy-go
     go get -d -v
     go build -v
 
-    cd ../client
+    cd /go/src/snowflake.git/client
     go get -d -v
     go build -v
 
-    cd ../proxy
+    cd /go/src/snowflake.git/server
+    go get -d -v
+    go build -v
+
+    cd /go/src/snowflake.git/proxy
     npm run build
     npm run webext
     #need to point to our localhost broker instead
@@ -55,17 +60,18 @@ if [ "$build" -ne "0" ]; then
 fi
 
 if [ "$client" -eq "0" ]; then
-    cp snowflake.git/broker/broker /go/bin/
-    cp snowflake.git/proxy-go/proxy-go /go/bin/
-    cp snowflake.git/client/client /go/bin/
-    cp snowflake.git/client/torrc-localhost /go/bin
+    cp /go/src/snowflake.git/broker/broker /go/bin/
+    cp /go/src/snowflake.git/proxy-go/proxy-go /go/bin/
+    cp /go/src/snowflake.git/client/client /go/bin/
+    cp /go/src/snowflake.git/server/server /go/bin/
 
-    cd /go/bin
+    cd
 
     broker -addr ":8080" -disable-tls > broker.log 2> broker.err &
-    proxy-go -broker "http://localhost:8080" > proxy.log 2> proxy.err &
+    proxy-go -broker "http://localhost:8080" --relay ws://127.0.0.1:8000/ > proxy.log 2> proxy.err &
+    tor -f torrc-server > server.out &
 else
-    cd /go/bin
+    cd
 
     # Find a SOCKSPort to bind to that is not in use
     count=0
@@ -76,7 +82,7 @@ else
         count=$(($count+1))
     done
 
-    cp torrc-localhost torrc-$count
+    cp torrc-client torrc-$count
     sed -i -e "s/datadir/datadir$count/g" torrc-$count
     sed -i -e "/^-url http:\/\/localhost:8080\//a -log snowflake_client-$count.log" torrc-$count
     echo "SOCKSPort $(($count+9050))" >> torrc-$count
