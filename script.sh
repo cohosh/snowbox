@@ -36,7 +36,7 @@ if [ "$build" -ne "0" ]; then
     go get -d -v
     go build -v
 
-    cd /go/src/snowflake.git/proxy-go
+    cd /go/src/snowflake.git/proxy
     go get -d -v
     go build -v
 
@@ -61,14 +61,14 @@ fi
 
 if [ "$client" -eq "0" ]; then
     cp /go/src/snowflake.git/broker/broker /go/bin/
-    cp /go/src/snowflake.git/proxy-go/proxy-go /go/bin/
+    cp /go/src/snowflake.git/proxy/proxy /go/bin/
     cp /go/src/snowflake.git/client/client /go/bin/
     cp /go/src/snowflake.git/server/server /go/bin/
 
     cd
 
     broker -addr ":8080" -disable-tls > broker.log 2> broker.err &
-    proxy-go -broker "http://localhost:8080" --relay ws://127.0.0.1:8000/ > proxy.log 2> proxy.err &
+    proxy -keep-local-addresses -broker "http://localhost:8080" -relay ws://127.0.0.1:8000/ > proxy.log 2> proxy.err &
     tor -f torrc-server > server.out &
 else
     cd
