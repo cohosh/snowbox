@@ -3,10 +3,16 @@
 if [ -e testenv_config ]; then
     ret=0
     . testenv_config
-    if [ -e "${SNOWFLAKE_REPO}/proxy-go" ]; then
+    if [ -e "${SNOWFLAKE_REPO}/broker" ]; then
         echo "SNOWFLAKE_REPO appears OK"
     else
-        echo "SNOWFLAKE_REPO not set correctly: cannot find ${SNOWFLAKE_REPO}/proxy-go"
+        echo "SNOWFLAKE_REPO not set correctly: cannot find ${SNOWFLAKE_REPO}/broker"
+        ret=1
+    fi
+    if [ -e "${SNOWFLAKEWEB_REPO}/webext" ]; then
+        echo "SNOWFLAKEWEB_REPO appears OK"
+    else
+        echo "SNOWFLAKEWEB_REPO not set correctly: cannot find ${SNOWFLAKEWEB_REPO}/webex"
         ret=1
     fi
 
@@ -20,6 +26,7 @@ fi
 cat <<EOF >testenv_config
 ## The full path to your checked-out copy of the snowflake repo
 SNOWFLAKE_REPO=/somewhere/snowflake.git
+SNOWFLAKEWEB_REPO=/somewhere/snowflake-webext.git
 
 EOF
 

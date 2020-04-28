@@ -22,11 +22,24 @@ done
 . testenv_config
 
 if [ "$attach" -eq "0" ]; then
-    docker rm snow_test 2> /dev/null
+    docker rm snow_test
     if [ $? -ne 0 ]; then
         printf 'Container already exists. Trying to attach...\n'
+        docker exec -it snow_test /bin/bash
+        if [ $? -ne 0 ]; then
+            docker run --name snow_test -p 8080:8080 -p 6060:6060 -p 5900:5900 \
+            -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake -v \
+            ${SNOWFLAKEWEB_REPO}:/go/src/snowflake-webext --net=vnc \
+            --cap-add=SYS_PTRACE --security-opt seccomp=unconfined snowbox \
+            /bin/bash
+        fi
+        exit
     else 
-        docker run --name snow_test -p 8080:8080 -p 6060:6060 -p 5900:5900 -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake.git --net=vnc --cap-add=SYS_PTRACE --security-opt seccomp=unconfined snowbox /bin/bash
+        docker run --name snow_test -p 8080:8080 -p 6060:6060 -p 5900:5900 -it \
+        -v ${SNOWFLAKE_REPO}:/go/src/snowflake -v \
+        ${SNOWFLAKEWEB_REPO}:/go/src/snowflake-webext --net=vnc \
+        --cap-add=SYS_PTRACE --security-opt seccomp=unconfined snowbox \
+        /bin/bash
         exit
     fi
 fi

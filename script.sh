@@ -31,24 +31,25 @@ if [ "$build" -ne "0" ]; then
     pkill -f tor
     pkill -f server
 
-    cd /go/src/snowflake.git/broker
+    cd /go/src/snowflake/broker
 
     go get -d -v
     go build -v
 
-    cd /go/src/snowflake.git/proxy
+    cd /go/src/snowflake/proxy
     go get -d -v
     go build -v
 
-    cd /go/src/snowflake.git/client
+    cd /go/src/snowflake/client
     go get -d -v
     go build -v
 
-    cd /go/src/snowflake.git/server
+    cd /go/src/snowflake/server
     go get -d -v
     go build -v
 
-    cd /go/src/snowflake.git/proxy
+    cd /go/src/snowflake-webext
+    npm install
     npm run build
     npm run webext
     #need to point to our localhost broker instead
@@ -60,10 +61,10 @@ if [ "$build" -ne "0" ]; then
 fi
 
 if [ "$client" -eq "0" ]; then
-    cp /go/src/snowflake.git/broker/broker /go/bin/
-    cp /go/src/snowflake.git/proxy/proxy /go/bin/
-    cp /go/src/snowflake.git/client/client /go/bin/
-    cp /go/src/snowflake.git/server/server /go/bin/
+    cp /go/src/snowflake/broker/broker /go/bin/
+    cp /go/src/snowflake/proxy/proxy /go/bin/
+    cp /go/src/snowflake/client/client /go/bin/
+    cp /go/src/snowflake/server/server /go/bin/
 
     cd
 
