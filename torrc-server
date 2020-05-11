@@ -1,0 +1,9 @@
+DataDirectory datadir-server
+SocksPort 0
+ORPort 9001
+ExtORPort auto
+BridgeRelay 1
+AssumeReachable 1
+PublishServerDescriptor 0
+ServerTransportListenAddr snowflake 0.0.0.0:8000
+ServerTransportPlugin snowflake exec /go/bin/server --disable-tls --log snowflake-server.log

@@ -1,0 +1,2 @@
+alias build="script.sh -b"
+alias run-client="script.sh -c"
