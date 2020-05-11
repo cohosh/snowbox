@@ -9,6 +9,12 @@ The first step is to clone the snowflake repostory locally onto your machine. Yo
 
 This will create the file testenv_config that you may edit with the path to your local snowflake repository.
 
+If you haven't run the container yet, you will need to create the network with
+the command
+```
+docker network create vnc
+```
+
 The command ./snowbox_run will run the snowbox Docker container and mount the snowflake repository to the container with the following command:
 
 ```
