@@ -68,8 +68,8 @@ if [ "$client" -eq "0" ]; then
 
     cd
 
-    broker -addr ":8080" -disable-tls > broker.log 2> broker.err &
-    proxy -keep-local-addresses -broker "http://localhost:8080" -relay ws://127.0.0.1:8000/ > proxy.log 2> proxy.err &
+    broker -addr ":8080" -disable-tls -unsafe-logging > broker.log 2> broker.err &
+    proxy -keep-local-addresses -broker "http://localhost:8080" -relay ws://127.0.0.1:8000/ -stun stun:stun.voip.blackberry.com:3478 > proxy.log 2> proxy.err &
     tor -f torrc-server > server.out &
 else
     cd

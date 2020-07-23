@@ -15,7 +15,9 @@ RUN apt-get clean
 
 # Add a Snowflake user
 RUN addgroup --gid $GROUP_ID snowflake
-RUN adduser --disabled-password --uid $USER_ID --gid $GROUP_ID snowflake
+RUN adduser --uid $USER_ID --gid $GROUP_ID snowflake
+RUN adduser snowflake sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER snowflake
 RUN go get -u github.com/smartystreets/goconvey
 COPY script.sh /go/bin/

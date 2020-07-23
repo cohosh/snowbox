@@ -2,6 +2,7 @@ UseBridges 1
 DataDirectory datadir
 
 ClientTransportPlugin snowflake exec /go/bin/client \
+-ice stun:stun.voip.blackberry.com:3478 \
 -url http://localhost:8080/ -keep-local-addresses \
 
 Bridge snowflake 0.0.3.0:1
