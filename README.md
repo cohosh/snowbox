@@ -20,7 +20,7 @@ docker network create vnc
 The command `./snowbox_run` will run the snowbox Docker container and mount the snowflake repository to the container with the following command:
 
 ```
-docker rm snow_test; docker run --name snow_test -p 8080:8080 -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake.git snowbox /bin/bash
+docker rm snow_test; docker run --name snow_test -p 8080:8080 -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake -v ${SNOWFLAKE_WEBEXT_REPO}:/go/src/snowflake-webext snowbox /bin/bash
 ```
 
 ### Building snowflake inside the Docker container
@@ -33,7 +33,9 @@ Open a new terminal and execute ```./snowbox_run --attach```. Excluding the --at
 To run and debug a browser-based proxy, execute ```build``` as described above to prepare the embeded and webextension proxies for use with the local broker. The best way to test browser-based proxies is to then load the badge or the webextension from outside the container.
 
 ##### Testing the embedded badge
-After getting the broker running in snowbox, open ```snowflake.git/proxy/build/embed.html``` in a broswer. It should be pointing to the broker at `http://localhost:8080` after running the build script.
+After getting the broker running in snowbox, open ```snowflake-webext.git/build/embed.html``` in a broswer. It should be pointing to the broker at `http://localhost:8080` after running the build script.
+
+In firefox it doesn't work as CORS blocks non-http requests. This can be solved by setting ```privacy.file_unique_origin``` to false in `about:config`.
 
 ##### Testing the webextension
 After getting the broker running in snowbox, navigate to ```about:debugging``` and select the "load temporary extension" option. Select ```snowflake.git/proxy/webext/manifest.json```
