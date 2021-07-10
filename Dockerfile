@@ -1,13 +1,13 @@
-FROM golang:1.13
+FROM golang:1.15
 
 ARG USER_ID
 ARG GROUP_ID
 
 # Install dependencies
-RUN rm -rf /usr/local/go
-RUN wget https://golang.org/dl/go1.13.14.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.13.14.linux-amd64.tar.gz
-RUN rm go1.13.14.linux-amd64.tar.gz
+#RUN rm -rf /usr/local/go
+#RUN wget https://golang.org/dl/go1.13.14.linux-amd64.tar.gz
+#RUN tar -C /usr/local -xzf go1.13.14.linux-amd64.tar.gz
+#RUN rm go1.13.14.linux-amd64.tar.gz
 RUN echo "deb https://deb.nodesource.com/node_12.x stretch main\ndeb-src https://deb.nodesource.com/node_12.x stretch main" | tee /etc/apt/sources.list.d/nodesource.list
 RUN curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 RUN apt-get update && apt-get install -y git libx11-dev tor net-tools sudo gdb strace x11vnc xvfb less apt-transport-https nodejs vim
