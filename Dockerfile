@@ -24,7 +24,7 @@ COPY torrc-server /home/snowflake/
 COPY torrc-client /home/snowflake/
 RUN chown snowflake.snowflake /go/bin/* /home/snowflake/*
 USER snowflake
-RUN go get -u github.com/smartystreets/goconvey
+#RUN go get -u github.com/smartystreets/goconvey
 COPY aliases.txt .
 RUN cat aliases.txt >> /home/snowflake/.bashrc
 WORKDIR /home/snowflake/

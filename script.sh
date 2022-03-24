@@ -30,6 +30,7 @@ if [ "$build" -ne "0" ]; then
     pkill -f client
     pkill -f tor
     pkill -f server
+    pkill -f probetest
 
     cd /go/src/snowflake/broker
 
@@ -45,6 +46,10 @@ if [ "$build" -ne "0" ]; then
     go build -v
 
     cd /go/src/snowflake/server
+    go get -d -v
+    go build -v
+
+    cd /go/src/snowflake/probetest
     go get -d -v
     go build -v
 
@@ -65,12 +70,14 @@ if [ "$client" -eq "0" ]; then
     cp /go/src/snowflake/proxy/proxy /go/bin/
     cp /go/src/snowflake/client/client /go/bin/
     cp /go/src/snowflake/server/server /go/bin/
+    cp /go/src/snowflake/probetest/probetest /go/bin/
 
     cd
 
     broker -addr ":8080" -disable-tls -unsafe-logging > broker.log 2> broker.err &
     proxy -keep-local-addresses -broker "http://localhost:8080" -relay ws://127.0.0.1:8000/ -stun stun:stun.voip.blackberry.com:3478 > proxy.log 2> proxy.err &
     tor -f torrc-server > server.out &
+    probetest --disable-tls 2> probetest.err &
 else
     cd
 

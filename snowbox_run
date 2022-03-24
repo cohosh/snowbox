@@ -29,6 +29,7 @@ if [ "$attach" -eq "0" ]; then
         if [ $? -ne 0 ]; then
             printf 'Creating new container.\n'
             docker run --name snow_test -p 8080:8080 -p 8000:8000 -p 6060:6060 \
+            -p 8443:8443 \
             -it  -v ${SNOWFLAKE_REPO}:/go/src/snowflake -v \
             ${SNOWFLAKEWEB_REPO}:/go/src/snowflake-webext \
             --cap-add=SYS_PTRACE --security-opt seccomp=unconfined snowbox \
@@ -36,8 +37,9 @@ if [ "$attach" -eq "0" ]; then
         fi
         exit
     else 
-        docker run --name snow_test -p 8080:8080 -p 8000:8000 -p 6060:6060 -it \
-        -v ${SNOWFLAKE_REPO}:/go/src/snowflake -v \
+        docker run --name snow_test -p 8080:8080 -p 8000:8000 -p 6060:6060 \
+        -p 8443:8443 \
+        -it -v ${SNOWFLAKE_REPO}:/go/src/snowflake -v \
         ${SNOWFLAKEWEB_REPO}:/go/src/snowflake-webext \
         --cap-add=SYS_PTRACE --security-opt seccomp=unconfined snowbox \
         /bin/bash
