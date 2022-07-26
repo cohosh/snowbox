@@ -24,6 +24,7 @@ COPY script.sh /go/bin/
 COPY test.sh /go/bin/
 COPY torrc-server /home/snowflake/
 COPY torrc-client /home/snowflake/
+COPY bridge-list.json /home/snowflake/
 RUN chown snowflake.snowflake /go/bin/* /home/snowflake/*
 USER snowflake
 #RUN go get -u github.com/smartystreets/goconvey
