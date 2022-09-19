@@ -61,6 +61,8 @@ if [ "$build" -ne "0" ]; then
     sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' build/embed.js
     sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' webext/embed.js
     sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' webext/snowflake.js
+    sed -i 's/snowflake.torproject.net/127.0.0.1/' build/embed.js
+    sed -i 's/snowflake.torproject.net/127.0.0.1/' webext/snowflake.js
     
     cd /go/src
 fi
