@@ -25,6 +25,9 @@ docker rm snow_test; docker run --name snow_test -p 8080:8080 -it  -v ${SNOWFLAK
 
 ### Building snowflake inside the Docker container
 Inside the snowbox container, execute ```build``` to build and run each component of snowflake.
+```
+$ build [ -b | --build ] [ -c | --client ] [--chromium | --gecko ]
+```
 
 ### Attaching additional terminals to the test environment
 Open a new terminal and execute ```./snowbox_run --attach```. Excluding the --attach argument will prompt the script to attempt an attachment if the container is already running.
