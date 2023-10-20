@@ -3,6 +3,7 @@
 
 build=0
 client=0
+browser="chromium"
 
 while :; do
     case $1 in
@@ -11,6 +12,12 @@ while :; do
             ;;
         -c|-\?|--client)
             client=1
+            ;;
+        --gecko)
+            browser="gecko"
+            ;;
+        --chromium)
+            browser="chromium"
             ;;
         -?*)
             printf 'Warning: Unknown option: %s\n' "$1" >&2
@@ -56,13 +63,13 @@ if [ "$build" -ne "0" ]; then
     cd /go/src/snowflake-webext
     npm install
     npm run build
-    npm run webext
+    npm run webext $browser
     #need to point to our localhost broker instead
     sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' build/embed.js
     sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' webext/embed.js
-    sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' webext/snowflake.js
+    sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' snowflake.js
     sed -i 's/snowflake.torproject.net/127.0.0.1/' build/embed.js
-    sed -i 's/snowflake.torproject.net/127.0.0.1/' webext/snowflake.js
+    sed -i 's/snowflake.torproject.net/127.0.0.1/' snowflake.js
     
     cd /go/src
 fi
