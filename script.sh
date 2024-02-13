@@ -66,10 +66,12 @@ if [ "$build" -ne "0" ]; then
     npm run webext $browser
     #need to point to our localhost broker instead
     sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' build/embed.js
-    sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' webext/embed.js
-    sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' snowflake.js
+    sed -i 's/snowflake-broker.freehaven.net/localhost:8080/' build-webext/snowflake.js
+    sed -i 's/wss:\/\/snowflake.freehaven.net/ws:\/\/127.0.0.1:8000/' build/embed.js
+    sed -i 's/wss:\/\/snowflake.freehaven.net/ws:\/\/127.0.0.1:8000/' build-webext/snowflake.js
     sed -i 's/snowflake.torproject.net/127.0.0.1/' build/embed.js
-    sed -i 's/snowflake.torproject.net/127.0.0.1/' snowflake.js
+    sed -i 's/snowflake.torproject.net/127.0.0.1/' build-webext/snowflake.js
+    sed -i 's/wss:\/\/\*.freehaven.net/ws:\/\/127.0.0.1:8000 http:\/\/localhost:8080/' build-webext/manifest.json
     
     cd /go/src
 fi
