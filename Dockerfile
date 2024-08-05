@@ -1,11 +1,11 @@
-FROM golang:1.21-bullseye
+FROM golang:1.21-bookworm
 
 ARG USER_ID
 ARG GROUP_ID
 
 # Install dependencies
-RUN echo "deb https://deb.nodesource.com/node_12.x bullseye main\ndeb-src https://deb.nodesource.com/node_12.x bullseye main" | tee /etc/apt/sources.list.d/nodesource.list
-RUN echo "deb [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org bullseye main\ndeb-src [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org bullseye main" | tee /etc/apt/sources.list.d/tor.list
+RUN echo "deb https://deb.nodesource.com/node_12.x bookworm main\ndeb-src https://deb.nodesource.com/node_12.x bookworm main" | tee /etc/apt/sources.list.d/nodesource.list
+RUN echo "deb [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org bookworm main\ndeb-src [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org bookworm main" | tee /etc/apt/sources.list.d/tor.list
 RUN curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 RUN wget -qO- https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --dearmor | tee /usr/share/keyrings/tor-archive-keyring.gpg >/dev/null
 RUN apt-get update && apt-get install -y git libx11-dev net-tools sudo gdb strace x11vnc xvfb less apt-transport-https nodejs vim tor
