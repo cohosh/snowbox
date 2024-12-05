@@ -88,7 +88,7 @@ if [ "$client" -eq "0" ]; then
     cd
 
     broker -addr ":8080" -disable-tls -unsafe-logging  -default-relay-pattern ^127.0.0.1$ -allowed-relay-pattern ^127.0.0.1$ -bridge-list-path bridge-list.json > broker.log 2> broker.err &
-    proxy -keep-local-addresses -broker "http://localhost:8080" -relay ws://127.0.0.1:8000/ -stun stun:stun.voip.blackberry.com:3478 -allowed-relay-hostname-pattern ^127.0.0.1$ -allow-non-tls-relay -unsafe-logging -verbose > proxy.log 2> proxy.err &
+    proxy -keep-local-addresses -broker "http://localhost:8080" -relay ws://127.0.0.1:8000/ -stun stun:stun.voip.blackberry.com:3478 -allow-proxying-to-private-addresses -allowed-relay-hostname-pattern ^127.0.0.1$ -allow-non-tls-relay -unsafe-logging -verbose > proxy.log 2> proxy.err &
     tor -f torrc-server > server.out &
     probetest --disable-tls 2> probetest.err &
 else
